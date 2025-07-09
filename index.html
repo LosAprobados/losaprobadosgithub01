@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorando Big Data y Análisis Predictivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+            --text: #333;
+            --text-light: #7f8c8d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.7;
+            color: var(--text);
+            background-color: #f9f9f9;
+        }
+        
+        /* Header */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 8rem 2rem 10rem;
+            text-align: center;
+            position: relative;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            margin-bottom: 4rem;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            background-color: var(--primary);
+        }
+        
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .navbar.scrolled .logo {
+            color: white;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .navbar.scrolled .nav-links a {
+            color: white;
+        }
+        
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .navbar.scrolled .mobile-menu-btn {
+            color: white;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        section {
+            margin-bottom: 6rem;
+            background-color: white;
+            border-radius: 8px;
+            padding: 4rem;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+        }
+        
+        h2 {
+            color: var(--primary);
+            margin-bottom: 2.5rem;
+            font-size: 2.5rem;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--secondary), var(--accent));
+        }
+        
+        h3 {
+            color: var(--secondary);
+            margin: 2.5rem 0 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 500;
+        }
+        
+        h4 {
+            color: var(--primary);
+            margin: 1.8rem 0 1rem;
+            font-size: 1.4rem;
+        }
+        
+        p {
+            margin-bottom: 1.8rem;
+            color: var(--text);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        
+        strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        ul, ol {
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+        
+        li {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        
+        li::before {
+            content: '•';
+            color: var(--secondary);
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1em;
+        }
+        
+        /* Cards */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin: 3rem 0;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eee;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-icon {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+            font-size: 3rem;
+        }
+        
+        .card-content {
+            padding: 2rem;
+        }
+        
+        .card-title {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        
+        /* Features */
+        .feature {
+            display: flex;
+            margin-bottom: 3rem;
+            align-items: flex-start;
+        }
+        
+        .feature-icon {
+            flex-shrink: 0;
+            background-color: var(--light);
+            color: var(--secondary);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-right: 2rem;
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);
+        }
+        
+        .feature-content {
+            flex-grow: 1;
+        }
+        
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 3rem 0;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* Interactive Elements */
+        .interactive-section {
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: white;
+            padding: 4rem;
+            border-radius: 8px;
+            margin: 4rem 0;
+        }
+        
+        .interactive-section h3 {
+            color: white;
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2rem;
+        }
+        
+        .question {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        
+        .question-title {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            color: white;
+        }
+        
+        textarea {
+            width: 100%;
+            padding: 1.2rem;
+            border-radius: 6px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+            margin-top: 1.2rem;
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 1.2rem;
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 2rem;
+        }
+        
+        .submit-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 5rem 2rem 3rem;
+            margin-top: 5rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+        
+        .footer-column h4 {
+            color: white;
+            margin-bottom: 2rem;
+            font-size: 1.4rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+        
+        .footer-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .social-links a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+            font-size: 1.2rem;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            section {
+                padding: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .navbar-container {
+                padding: 1rem;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--primary);
+                flex-direction: column;
+                align-items: center;
+                padding-top: 3rem;
+                transition: left 0.3s;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 1.5rem 0;
+            }
+            
+            .nav-links a {
+                color: white;
+                font-size: 1.3rem;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                padding: 7rem 1.5rem 8rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            section {
+                padding: 2rem;
+            }
+            
+            .feature {
+                flex-direction: column;
+            }
+            
+            .feature-icon {
+                margin-bottom: 1.5rem;
+                margin-right: 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            section {
+                padding: 1.5rem;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted var(--secondary);
+            cursor: help;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 280px;
+            background-color: var(--primary);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            padding: 1.2rem;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 1rem;
+            font-weight: normal;
+            box-shadow: 0 10px 25px rgba(5, 5, 5, 0.2);
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Accordion */
+        .accordion {
+            margin: 3rem 0;
+        }
+        
+        .accordion-item {
+            margin-bottom: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .accordion-header {
+            background-color: var(--light);
+            padding: 1.8rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--primary);
+            transition: background-color 0.3s;
+        }
+        
+        .accordion-header:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .accordion-header::after {
+            content: '+';
+            font-size: 1.8rem;
+            color: var(--secondary);
+            transition: transform 0.3s;
+        }
+        
+        .accordion-header.active::after {
+            content: '-';
+        }
+        
+        .accordion-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: white;
+        }
+        
+        .accordion-content-inner {
+            padding: 2rem;
+        }
+        
+        /* Progress bars */
+        .progress-container {
+            margin: 2.5rem 0;
+        }
+        
+        .progress-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .progress-bar {
+            height: 12px;
+            background-color: #ecf0f1;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+            border-radius: 6px;
+            width: 0;
+            transition: width 1.5s ease-in-out;
+        }
+        
+        /* Cookie Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--dark);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 999;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .cookie-banner.show {
+            transform: translateY(0);
+        }
+        
+        .cookie-text {
+            flex: 1;
+            margin-right: 2rem;
+        }
+        
+        .cookie-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .cookie-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">
+                <i class="fas fa-chart-line"></i> DataEdu
+            </a>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#big-data">Big Data</a></li>
+                <li><a href="#analisis-predictivo">Análisis Predictivo</a></li>
+                <li><a href="#aplicaciones">Aplicaciones</a></li>
+                <li><a href="#etica">Ética</a></li>
+                <li><a href="#interactivo">Interactivo</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h1 class="animate">Explorando Big Data y Análisis Predictivo</h1>
+            <p class="hero-subtitle animate delay-1">La Guía Esencial para Entender el Futuro de los Datos</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Big Data Section -->
+        <section id="big-data" class="animate delay-1">
+            <h2>¿Qué es Big Data? El Universo de la Información Masiva</h2>
+            <p>El término <strong>Big Data</strong> se refiere a conjuntos de datos tan <strong>vastos y complejos</strong> que las herramientas de software tradicionales no pueden capturarlos, procesarlos ni analizarlos eficientemente. Vivimos en una era donde cada interacción digital genera datos, creando oportunidades sin precedentes para obtener conocimientos valiosos.</p>
+            
+            <h3>Las "V" del Big Data</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Volumen</h3>
+                        <p>La inmensa cantidad de datos generados cada segundo. Por ejemplo, cada minuto se envían 188 millones de correos electrónicos y se realizan 4.5 millones de búsquedas en Google.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Velocidad</h3>
+                        <p>La rapidez con que se generan y procesan datos. Los sistemas modernos pueden analizar información en tiempo real, como las transacciones de tarjetas de crédito para detectar fraudes.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-shapes"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Variedad</h3>
+                        <p>Diferentes formatos de datos: desde números en bases de datos (estructurados) hasta publicaciones en redes sociales, imágenes y videos (no estructurados).</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Veracidad</h3>
+                        <p>La calidad y fiabilidad de los datos. Datos incorrectos pueden llevar a conclusiones erróneas, por lo que es crucial verificar su precisión.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Fuentes de Big Data</h3>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Transacciones comerciales</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>Facturación, compras con tarjetas de crédito, registros de inventario y otras operaciones comerciales que generan datos estructurados. Estos datos son fundamentales para analizar patrones de compra y optimizar inventarios.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Redes sociales y web</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>Interacciones en plataformas sociales, comentarios, likes, shares, y datos de navegación web que revelan preferencias del consumidor. Cada like, comentario o compartir proporciona información valiosa sobre el comportamiento del usuario.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Dispositivos IoT</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>Sensores en dispositivos inteligentes, maquinaria industrial, wearables y otros equipos conectados que generan datos constantemente. Un solo avión comercial puede generar más de 500 GB de datos por vuelo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Análisis Predictivo Section -->
+        <section id="analisis-predictivo" class="animate delay-2">
+            <h2>Análisis Predictivo: Anticipando el Futuro</h2>
+            <p>El <strong>Análisis Predictivo</strong> es la aplicación de técnicas estadísticas y de aprendizaje automático para interpretar datos, detectar patrones y generar pronósticos cuantitativos sobre el futuro. Su propósito es tomar mejores decisiones con respecto al futuro basándose en datos históricos y actuales.</p>
+            
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>IA y Machine Learning como Motores</h3>
+                    <p>La base tecnológica que impulsa este análisis es la <strong>Inteligencia Artificial (IA)</strong> y el <strong>Machine Learning (ML)</strong>. El Machine Learning, una rama de la IA, se centra en aprender patrones a partir de datos. Sus algoritmos son capaces de simular el comportamiento humano y manejar tareas demasiado complejas o con grandes volúmenes de datos que superan la capacidad humana, adaptándose a los cambios del entorno.</p>
+                </div>
+            </div>
+            
+            <h3>Modelos Predictivos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modelo</th>
+                        <th>Descripción</th>
+                        <th>Aplicación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Clasificación</td>
+                        <td>Predice la pertenencia a una categoría</td>
+                        <td>Detección de fraude, diagnóstico médico</td>
+                    </tr>
+                    <tr>
+                        <td>Regresión</td>
+                        <td>Predice valores numéricos continuos</td>
+                        <td>Pronóstico de ventas, precios de viviendas</td>
+                    </tr>
+                    <tr>
+                        <td>Agrupación</td>
+                        <td>Agrupa datos similares sin categorías predefinidas</td>
+                        <td>Segmentación de clientes, análisis de mercado</td>
+                    </tr>
+                    <tr>
+                        <td>Series Temporales</td>
+                        <td>Analiza datos ordenados en el tiempo</td>
+                        <td>Pronóstico de demanda, análisis bursátil</td>
+                    </tr>
+                    <tr>
+                        <td>Valores Atípicos</td>
+                        <td>Identifica anomalías en los datos</td>
+                        <td>Detección de fraudes, fallos en equipos</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Proceso de Análisis Predictivo</h3>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div class="feature-content">
+                    <ol>
+                        <li><strong>Definición del proyecto:</strong> Establecer objetivos claros y métricas de éxito.</li>
+                        <li><strong>Recolección de datos:</strong> Obtener información relevante de diversas fuentes.</li>
+                        <li><strong>Limpieza y preparación:</strong> Eliminar errores, duplicados y normalizar formatos.</li>
+                        <li><strong>Análisis exploratorio:</strong> Identificar patrones iniciales y relaciones.</li>
+                        <li><strong>Modelado predictivo:</strong> Seleccionar y entrenar algoritmos adecuados.</li>
+                        <li><strong>Validación:</strong> Probar el modelo con datos no vistos.</li>
+                        <li><strong>Implementación:</strong> Poner el modelo en producción.</li>
+                        <li><strong>Monitoreo:</strong> Evaluar continuamente el rendimiento.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aplicaciones Section -->
+        <section id="aplicaciones" class="animate delay-1">
+            <h2>Aplicaciones y Ejemplos: El Impacto en el Mundo Real</h2>
+            
+            <div class="progress-container">
+                <div class="progress-title">
+                    <span>Fabricación y Producción (Industria 4.0)</span>
+                    <span>85%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%"></div>
+                </div>
+            </div>
+            
+            <p>Se <strong>optimizan los procesos de producción</strong>, identificando <strong>fallos de calidad tempranamente</strong> y permitiendo <strong>medidas correctivas más rápidas</strong>. Se puede <strong>predecir los resultados futuros</strong> y utilizar datos históricos para identificar modelos en el proceso de producción. El mantenimiento predictivo puede reducir los tiempos de inactividad en hasta un 50%.</p>
+            
+            <div class="progress-container">
+                <div class="progress-title">
+                    <span>Cadena de Suministro</span>
+                    <span>78%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 78%"></div>
+                </div>
+            </div>
+            
+            <p>El análisis predictivo examina ventas anteriores, tendencias de inventario, datos históricos y externos para <strong>optimizar inventario, espacio de almacén y decisiones de envío</strong>. Empresas como Amazon utilizan estos modelos para predecir la demanda con semanas de anticipación, reduciendo costos de almacenamiento en hasta un 40%.</p>
+            
+            <div class="progress-container">
+                <div class="progress-title">
+                    <span>Marketing y Experiencia del Cliente</span>
+                    <span>92%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 92%"></div>
+                </div>
+            </div>
+            
+            <p>Permite una <strong>comprensión más profunda de las necesidades y gustos de los clientes</strong>. Netflix utiliza algoritmos predictivos para recomendar contenido, lo que representa el 80% de lo que los usuarios eligen ver. Los modelos de churn prediction pueden identificar con hasta un 90% de precisión qué clientes están en riesgo de abandonar un servicio.</p>
+            
+            <h3>Ejemplos Cotidianos</h3>
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Google Maps</h3>
+                        <p>Predice el tráfico y sugiere las rutas más rápidas analizando datos históricos y en tiempo real de millones de usuarios.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Recomendaciones de Productos</h3>
+                        <p>Amazon analiza tu historial de compras y comportamiento para predecir qué productos podrían interesarte.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Detección de Fraude</h3>
+                        <p>Los bancos usan modelos predictivos para identificar transacciones sospechosas en tiempo real con una precisión superior al 95%.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ética Section -->
+        <section id="etica" class="animate delay-2">
+            <h2>Desafíos y Consideraciones Éticas</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Privacidad y Seguridad</h3>
+                        <p>Con el RGPD y otras regulaciones, las empresas deben garantizar la protección de datos personales. Técnicas como la anonimización y el cifrado son esenciales.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Sesgos Algorítmicos</h3>
+                        <p>Los modelos pueden perpetuar discriminación si los datos de entrenamiento son sesgados. Casos famosos incluyen sistemas de contratación que discriminaban por género.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Transparencia</h3>
+                        <p>Los "modelos de caja negra" dificultan entender cómo se toman decisiones. El movimiento hacia IA explicable busca hacer los algoritmos más comprensibles.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Principios Éticos Fundamentales</h3>
+            <ul>
+                <li><strong>Responsabilidad:</strong> Las organizaciones deben ser responsables de sus sistemas de IA y sus resultados.</li>
+                <li><strong>Equidad:</strong> Los sistemas deben tomar decisiones justas y no discriminatorias.</li>
+                <li><strong>Transparencia:</strong> Los procesos deben ser comprensibles y explicables.</li>
+                <li><strong>Privacidad:</strong> Respeto por la privacidad y protección de datos personales.</li>
+                <li><strong>Beneficio Social:</strong> La tecnología debe usarse para el beneficio de la sociedad.</li>
+            </ul>
+            
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-gavel"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>Regulaciones Clave</h3>
+                    <p><strong>RGPD (UE):</strong> Establece estándares estrictos para el manejo de datos personales de ciudadanos europeos, incluyendo el "derecho a la explicación" de decisiones automatizadas.</p>
+                    <p><strong>CCPA (California):</strong> Similar al RGPD pero aplicable en California, otorga a los consumidores derechos sobre sus datos personales.</p>
+                    <p><strong>LOPDGDD (España):</strong> Adaptación española del RGPD con especificaciones adicionales para el contexto nacional.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Section -->
+        <section id="interactivo" class="interactive-section animate delay-3">
+            <h3>¡Ponga a Prueba su Comprensión!</h3>
+            <p style="text-align: center; margin-bottom: 3rem;">Ahora que hemos explorado los fundamentos del Big Data y el Análisis Predictivo, le invitamos a reflexionar sobre sus implicaciones.</p>
+            
+            <div class="question">
+                <div class="question-title">1. Desafío Ético en la Personalización</div>
+                <p>Las empresas usan análisis predictivo para personalizar ofertas de productos y servicios (como las recomendaciones de Netflix o Amazon). ¿Qué <strong>límites éticos</strong> considerarías fundamentales para asegurar que esta personalización no se convierta en una invasión de la privacidad o manipulación, y cómo los comunicarías de manera efectiva a los usuarios?</p>
+                <textarea placeholder="Escribe tu respuesta aquí..."></textarea>
+            </div>
+            
+            <div class="question">
+                <div class="question-title">2. Preparación para el Futuro</div>
+                <p>Más allá de 2024, se espera que el <strong>Big Data y la IA estén aún más integrados</strong> en todas las decisiones y que la <strong>computación cuántica revolucione el procesamiento de datos</strong>. Desde una perspectiva educativa, ¿qué <strong>nuevas habilidades o áreas de conocimiento</strong> considera que serán cruciales para los profesionales y la sociedad en general para navegar este futuro de manera responsable y aprovechar al máximo estas tecnologías?</p>
+                <textarea placeholder="Escribe tu respuesta aquí..."></textarea>
+            </div>
+            
+            <button class="submit-btn">Enviar Reflexiones</button>
+        </section>
+        
+        <!-- Glosario Section -->
+        <section class="animate delay-1">
+            <h2>Glosario de Términos</h2>
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Big Data</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>Conjuntos de datos tan grandes y complejos que requieren herramientas especializadas para su almacenamiento, procesamiento y análisis. Se caracterizan por las 4 V's: Volumen, Velocidad, Variedad y Veracidad.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Análisis Predictivo</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>Uso de técnicas estadísticas y de machine learning para analizar datos actuales e históricos y hacer predicciones sobre eventos futuros o comportamientos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Machine Learning</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>Rama de la inteligencia artificial que permite a los sistemas aprender patrones a partir de datos sin ser explícitamente programados, mejorando su rendimiento con la experiencia.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>IoT (Internet de las Cosas)</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>Red de dispositivos físicos conectados a internet que recopilan e intercambian datos. Estos dispositivos generan grandes volúmenes de datos que pueden ser analizados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>DataEdu</h4>
+                <p>Explorando el futuro de los datos y la inteligencia artificial para un mundo más inteligente y ético.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-github"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Explorar</h4>
+                <ul class="footer-links">
+                    <li><a href="#big-data">Big Data</a></li>
+                    <li><a href="#analisis-predictivo">Análisis Predictivo</a></li>
+                    <li><a href="#aplicaciones">Aplicaciones</a></li>
+                    <li><a href="#etica">Ética de Datos</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Recursos</h4>
+                <ul class="footer-links">
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Casos de Estudio</a></li>
+                    <li><a href="#">Cursos Recomendados</a></li>
+                    <li><a href="#">Investigaciones</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contacto</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> info@dataedu.com</li>
+                    <li><i class="fas fa-phone"></i> +34 123 456 789</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Madrid, España</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 DataEdu. Todos los derechos reservados. | <a href="#">Política de Privacidad</a> | <a href="#">Términos de Servicio</a> | <a href="#">Cookies</a></p>
+        </div>
+    </footer>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner">
+        <div class="cookie-text">
+            <p>Utilizamos cookies para mejorar tu experiencia en nuestro sitio web. Al continuar navegando, aceptas nuestro uso de cookies.</p>
+        </div>
+        <button class="cookie-btn">Aceptar</button>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Smooth Scrolling for Navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+        
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Accordion Functionality
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const accordionItem = header.parentElement;
+                const accordionContent = header.nextElementSibling;
+                
+                // Close all other items
+                document.querySelectorAll('.accordion-content').forEach(content => {
+                    if (content !== accordionContent && content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        content.previousElementSibling.classList.remove('active');
+                    }
+                });
+                
+                // Toggle current item
+                header.classList.toggle('active');
+                if (accordionContent.style.maxHeight) {
+                    accordionContent.style.maxHeight = null;
+                } else {
+                    accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+                }
+            });
+        });
+        
+        // Open first accordion by default
+        if (accordionHeaders.length > 0) {
+            accordionHeaders[0].click();
+        }
+        
+        // Animate progress bars when they come into view
+        const progressBars = document.querySelectorAll('.progress-fill');
+        
+        const animateProgressBars = () => {
+            progressBars.forEach(bar => {
+                const rect = bar.parentElement.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    bar.style.width = bar.parentElement.previousElementSibling.lastElementChild.textContent;
+                }
+            });
+        };
+        
+        // Initial check
+        animateProgressBars();
+        
+        // Check on scroll
+        window.addEventListener('scroll', animateProgressBars);
+        
+        // Form submission
+        const contactForm = document.querySelector('.interactive-section');
+        const submitBtn = contactForm.querySelector('.submit-btn');
+        
+        submitBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const textareas = contactForm.querySelectorAll('textarea');
+            let allFilled = true;
+            
+            textareas.forEach(textarea => {
+                if (textarea.value.trim() === '') {
+                    allFilled = false;
+                    textarea.style.border = '2px solid var(--accent)';
+                } else {
+                    textarea.style.border = 'none';
+                }
+            });
+            
+            if (allFilled) {
+                alert('¡Gracias por tus reflexiones! Tus respuestas han sido enviadas.');
+                textareas.forEach(textarea => {
+                    textarea.value = '';
+                });
+            } else {
+                alert('Por favor, responde todas las preguntas antes de enviar.');
+            }
+        });
+        
+        // Show cookie banner after delay
+        setTimeout(() => {
+            document.querySelector('.cookie-banner').classList.add('show');
+        }, 2000);
+        
+        // Close cookie banner
+        document.querySelector('.cookie-btn').addEventListener('click', () => {
+            document.querySelector('.cookie-banner').classList.remove('show');
+        });
+        
+        // Intersection Observer for animations
+        const animateElements = document.querySelectorAll('.animate');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        animateElements.forEach(element => {
+            observer.observe(element);
+        });
+    </script>
+</body>
+</html>
