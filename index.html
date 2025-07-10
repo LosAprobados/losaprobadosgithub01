@@ -3,860 +3,1382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explorando Big Data y Análisis Predictivo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Big Data y Análisis Predictivo - DataEdu</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --success: #27ae60;
-            --text: #333;
-            --text-light: #7f8c8d;
+            --primary-color: #007bff; /* Azul brillante */
+            --primary-gradient-start: #0056b3; /* Azul más oscuro para degradado */
+            --primary-gradient-end: #00c6ff; /* Celeste para degradado */
+            --secondary-color: #6c757d; /* Gris oscuro */
+            --accent-color: #28a745; /* Verde para acentos/éxito */
+            --text-color-light: #343a40; /* Texto oscuro para fondos claros */
+            --text-color-dark: #f8f9fa; /* Texto claro para fondos oscuros */
+            --background-light: #ffffff; /* Fondo claro */
+            --background-dark: #212529; /* Fondo oscuro */
+            --card-background-light: #f8f9fa; /* Fondo de tarjeta claro */
+            --card-background-dark: #343a40; /* Fondo de tarjeta oscuro */
+            --border-color-light: #dee2e6; /* Borde claro */
+            --border-color-dark: #495057; /* Borde oscuro */
+            --hover-color-light: #e9ecef; /* Color de hover claro */
+            --hover-color-dark: #495057; /* Color de hover oscuro */
+            --shadow-light: rgba(0, 0, 0, 0.1);
+            --shadow-dark: rgba(255, 255, 255, 0.1);
+            --code-bg-light: #e9ecef;
+            --code-bg-dark: #495057;
+            --primary-color-dark: #8a2be2; /* Morado vibrante (nuevo principal en dark) */
+            --accent-color-dark: #9370db; /* Morado más claro (nuevo acento en dark) */
         }
-        
-        * {
+
+        body {
+            font-family: 'Open Sans', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.8;
+            color: var(--text-color-light);
+            background-color: var(--background-light);
+            transition: background-color 0.3s, color 0.3s;
         }
-        
-        body {
-            line-height: 1.7;
-            color: var(--text);
-            background-color: #f9f9f9;
+
+        body.dark-mode {
+            color: var(--text-color-dark);
+            background-color: var(--background-dark);
         }
-        
-        /* Header */
-        .hero {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 8rem 2rem 10rem;
-            text-align: center;
-            position: relative;
-            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
-            margin-bottom: 4rem;
-        }
-        
-        .hero-content {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-        }
-        
-        h1 {
-            font-size: 3.2rem;
-            margin-bottom: 1.5rem;
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-color);
+            margin-top: 1.8em;
+            margin-bottom: 1.8em;
             font-weight: 700;
-            line-height: 1.2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1); /* Sutil sombra para destacar */
         }
-        
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2.5rem;
-            font-weight: 300;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3,
+        body.dark-mode h4,
+        body.dark-mode h5,
+        body.dark-mode h6 {
+            color: var(--primary-color-dark);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
-        
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: all 0.3s ease;
+        h1 { font-size: 3.8rem; } /* Aumentado */
+        h2 { font-size: 2.8rem; } /* Aumentado */
+        h3 { font-size: 2rem; } /* Aumentado */
+        h4 { font-size: 1.5rem; } /* Aumentado */
+
+        p {
+            font-size: 1.15rem; /* Aumentado */
+            margin-bottom: 1.2em;
         }
-        
-        .navbar.scrolled {
-            background-color: var(--primary);
-        }
-        
-        .navbar-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
+
+        a {
+            color: var(--primary-color);
             text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo i {
-            margin-right: 0.5rem;
-            color: var(--secondary);
-        }
-        
-        .navbar.scrolled .logo {
-            color: white;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 2rem;
-        }
-        
-        .nav-links a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
             transition: color 0.3s;
         }
-        
-        .navbar.scrolled .nav-links a {
-            color: white;
+
+        a:hover {
+            color: var(--accent-color);
         }
-        
-        .nav-links a:hover {
-            color: var(--secondary);
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .navbar.scrolled .mobile-menu-btn {
-            color: white;
-        }
-        
-        /* Main Content */
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 20px;
         }
-        
-        section {
-            margin-bottom: 6rem;
-            background-color: white;
-            border-radius: 8px;
-            padding: 4rem;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+
+        /* Navbar */
+        .navbar {
+            background-color: var(--background-light);
+            color: var(--text-color-light);
+            padding: 1rem 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px var(--shadow-light);
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
         }
-        
-        h2 {
-            color: var(--primary);
-            margin-bottom: 2.5rem;
-            font-size: 2.5rem;
+
+        .navbar.scrolled {
+            box-shadow: 0 4px 10px var(--shadow-light);
+            background-color: var(--background-light); /* Ensure it stays light if not dark mode */
+        }
+
+        body.dark-mode .navbar {
+            background-color: var(--background-dark);
+            color: var(--text-color-dark);
+            box-shadow: 0 2px 5px var(--shadow-dark);
+        }
+
+        body.dark-mode .navbar.scrolled {
+            box-shadow: 0 4px 10px var(--shadow-dark);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .logo {
+            color: var(--primary-color-dark);
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            flex-grow: 1;
+            justify-content: center; /* Centrar los enlaces de navegación */
+        }
+
+        .nav-links li {
+            margin: 0 18px; /* Espaciado entre elementos de la lista */
+        }
+
+        .nav-links a {
+            color: var(--text-color-light);
             font-weight: 600;
+            font-size: 1.1rem; /* Aumentado */
             position: relative;
-            padding-bottom: 1rem;
+            padding: 5px 0;
+            white-space: nowrap; /* Evitar que los enlaces se rompan en varias líneas */
         }
-        
-        h2::after {
+
+        body.dark-mode .nav-links a {
+            color: var(--text-color-dark);
+        }
+
+        .nav-links a::after {
             content: '';
             position: absolute;
+            width: 0;
+            height: 2px;
             bottom: 0;
             left: 0;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, var(--secondary), var(--accent));
+            background-color: var(--primary-color);
+            transition: width 0.3s ease-out;
         }
-        
-        h3 {
-            color: var(--secondary);
-            margin: 2.5rem 0 1.5rem;
-            font-size: 1.8rem;
-            font-weight: 500;
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
-        
-        h4 {
-            color: var(--primary);
-            margin: 1.8rem 0 1rem;
-            font-size: 1.4rem;
+
+        body.dark-mode .nav-links a::after {
+            background-color: var(--primary-color-dark);
         }
-        
-        p {
-            margin-bottom: 1.8rem;
-            color: var(--text);
-            font-size: 1.1rem;
-            line-height: 1.8;
+
+        .mobile-menu-btn {
+            display: none; /* Ocultar por defecto en desktop */
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--primary-color);
+            margin-left: 20px; /* Separación del resto de acciones */
         }
-        
-        strong {
-            color: var(--primary);
-            font-weight: 600;
+
+        body.dark-mode .mobile-menu-btn {
+            color: var(--primary-color-dark);
         }
-        
-        ul, ol {
-            margin-bottom: 2rem;
-            padding-left: 2rem;
-        }
-        
-        li {
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        
-        li::before {
-            content: '•';
-            color: var(--secondary);
-            font-weight: bold;
-            display: inline-block;
-            width: 1em;
-            margin-left: -1em;
-        }
-        
-        /* Cards */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2.5rem;
-            margin: 3rem 0;
-        }
-        
-        .card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
-            border: 1px solid #eee;
-        }
-        
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-        }
-        
-        .card-icon {
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            color: white;
-            padding: 2.5rem;
-            text-align: center;
-            font-size: 3rem;
-        }
-        
-        .card-content {
-            padding: 2rem;
-        }
-        
-        .card-title {
-            color: var(--primary);
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-        
-        /* Features */
-        .feature {
-            display: flex;
-            margin-bottom: 3rem;
-            align-items: flex-start;
-        }
-        
-        .feature-icon {
-            flex-shrink: 0;
-            background-color: var(--light);
-            color: var(--secondary);
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
+
+        /* Search Box and Dark Mode Toggle */
+        .header-actions {
             display: flex;
             align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-right: 2rem;
-            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);
+            gap: 15px;
         }
-        
-        .feature-content {
-            flex-grow: 1;
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 250px;
         }
-        
-        /* Tables */
+
+        .search-box input {
+            border: 1px solid var(--border-color-light);
+            padding: 8px 12px;
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.9rem;
+            background-color: var(--card-background-light);
+            color: var(--text-color-light);
+            transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+            width: 100%; /* El input ocupa el 100% del search-box */
+        }
+
+        body.dark-mode .search-box input {
+            border-color: var(--border-color-dark);
+            background-color: var(--card-background-dark);
+            color: var(--text-color-dark);
+        }
+
+        .search-box button {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            margin-left: -35px; /* Overlap button for icon inside input */
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: color 0.3s;
+        }
+
+        body.dark-mode .search-box button {
+            color: var(--primary-color-dark);
+        }
+
+        .search-box button:hover {
+            color: var(--primary-color-dark);
+            background-color: var(--hover-color-light);
+        }
+
+        body.dark-mode .search-box button:hover {
+            color: var(--primary-color);
+            background-color: var(--hover-color-dark);
+        }
+
+        #searchResults {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: var(--background-light);
+            border: 1px solid var(--border-color-light);
+            border-radius: 5px;
+            list-style: none;
+            padding: 5px 0;
+            margin: 5px 0 0 0;
+            box-shadow: 0 2px 5px var(--shadow-light);
+            display: none; /* Hidden by default */
+            z-index: 1010;
+        }
+
+        body.dark-mode #searchResults {
+            background-color: var(--card-background-dark);
+            border-color: var(--border-color-dark);
+            box-shadow: 0 2px 5px var(--shadow-dark);
+        }
+
+        #searchResults li a {
+            display: block;
+            padding: 8px 15px;
+            color: var(--text-color-light);
+            text-decoration: none;
+        }
+
+        body.dark-mode #searchResults li a {
+            color: var(--text-color-dark);
+        }
+
+        #searchResults li a:hover {
+            background-color: var(--hover-color-light);
+            color: var(--primary-color);
+        }
+
+        body.dark-mode #searchResults li a:hover {
+            background-color: var(--hover-color-dark);
+            color: var(--accent-color);
+        }
+
+        .dark-mode-toggle {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text-color-light);
+            padding: 5px;
+            border-radius: 50%;
+            transition: color 0.3s, background-color 0.3s;
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            color: var(--text-color-dark);
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--hover-color-light);
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background-color: var(--hover-color-dark);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://source.unsplash.com/1600x900/?data,technology') no-repeat center center/cover;
+            color: #fff;
+            text-align: center;
+            padding: 180px 20px 120px;
+            margin-top: 70px; /* Adjust for fixed navbar */
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            filter: blur(5px);
+            z-index: -1;
+            transform: scale(1.05);
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            line-height: 1.5;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+        }
+
+        .hero-logo-circle { /* Estilos para el logo circular en la sección hero */
+            width: 120px; /* Tamaño del logo */
+            height: 120px;
+            border-radius: 50%; /* Forma circular */
+            object-fit: cover;
+            margin: 0 auto 15px; /* Centrado y más margen */
+            border: 5px solid rgba(255, 255, 255, 0.3); /* Borde blanco sutil */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombra para profundidad */
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            background-image: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end)); /* Degradado */
+            color: #fff;
+            padding: 15px 30px; /* Más padding */
+            border-radius: 8px; /* Más redondeado */
+            transition: all 0.3s ease;
+            display: inline-block;
+            font-weight: 700;
+            font-size: 1.1rem; /* Aumentado */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-image: linear-gradient(to right, var(--primary-gradient-end), var(--primary-gradient-start)); /* Degradado inverso al hover */
+            transform: translateY(-3px) scale(1.02); /* Efecto hover más pronunciado */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+        body.dark-mode .btn {
+            background-color: var(--primary-color-dark);
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--accent-color-dark)); /* Degradado morado */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .btn:hover {
+            background-image: linear-gradient(to right, var(--accent-color-dark), var(--primary-color-dark));
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 80px 0;
+            margin-bottom: 20px;
+            background-color: var(--background-light);
+            border-radius: 12px;
+            box-shadow: 0 2px 10px var(--shadow-light);
+            transition: background-color 0.3s, box-shadow 0.3s;
+            opacity: 0; /* For animation */
+            animation: fadeIn 0.8s forwards;
+            animation-play-state: paused; /* Pause animation initially */
+        }
+
+        body.dark-mode section {
+            background-color: var(--card-background-dark);
+            box-shadow: 0 2px 10px var(--shadow-dark);
+        }
+
+        section:nth-of-type(even) {
+            background-color: var(--card-background-light);
+        }
+
+        body.dark-mode section:nth-of-type(even) {
+            background-color: var(--background-dark);
+        }
+
+        /* Animation Delays */
+        .animate.delay-1 { animation-delay: 0.2s; }
+        .animate.delay-2 { animation-delay: 0.4s; }
+        .animate.delay-3 { animation-delay: 0.6s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Images within content */
+        .content-image {
+            max-width: 80%;
+            height: auto;
+            display: block;
+            margin: 30px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px var(--shadow-light);
+        }
+        body.dark-mode .content-image {
+            box-shadow: 0 4px 10px var(--shadow-dark);
+        }
+
+        /* Video styling */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            margin-top: 40px;
+            margin-bottom: 40px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow-light);
+        }
+        body.dark-mode .video-container {
+            box-shadow: 0 4px 15px var(--shadow-dark);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* Feature Boxes (Big Data & Predictive Analytics sections) */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .feature-box {
+            background-color: var(--card-background-light);
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            text-align: center;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.dark-mode .feature-box {
+            background-color: var(--card-background-dark);
+            box-shadow: 0 4px 15px var(--shadow-dark);
+        }
+
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px var(--shadow-light);
+        }
+
+        body.dark-mode .feature-box:hover {
+            box-shadow: 0 6px 20px var(--shadow-dark);
+        }
+
+        .feature-box .icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        body.dark-mode .feature-box .icon {
+            color: var(--primary-color-dark);
+        }
+
+        .feature-box h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .feature-box h3 {
+            color: var(--text-color-dark); /* Keep headings distinct in dark mode */
+        }
+
+        .feature-box p {
+            font-size: 1rem;
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode .feature-box p {
+            color: var(--text-color-dark);
+        }
+
+        /* Table Styling */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin: 3rem 0;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            box-shadow: 0 2px 10px var(--shadow-light);
             border-radius: 8px;
-            overflow: hidden;
+            overflow: hidden; /* Ensures rounded corners on table */
         }
-        
+
+        body.dark-mode table {
+            box-shadow: 0 2px 10px var(--shadow-dark);
+        }
+
         th, td {
-            padding: 1.2rem;
+            padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color-light);
+            color: var(--text-color-light);
         }
-        
+
+        body.dark-mode th, body.dark-mode td {
+            border-bottom: 1px solid var(--border-color-dark);
+            color: var(--text-color-dark);
+        }
+
         th {
-            background-color: var(--primary);
-            color: white;
-            font-weight: 500;
+            background-color: var(--primary-color);
+            background-image: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end)); /* Degradado */
+            color: #fff;
+            font-weight: 700;
         }
-        
+
+        body.dark-mode th {
+            background-color: var(--primary-color-dark);
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--accent-color-dark));
+        }
+
         tr:nth-child(even) {
-            background-color: #f8f9fa;
+            background-color: var(--card-background-light);
         }
-        
+
+        body.dark-mode tr:nth-child(even) {
+            background-color: var(--card-background-dark);
+        }
+
         tr:hover {
-            background-color: #f1f1f1;
+            background-color: var(--hover-color-light);
         }
-        
-        /* Interactive Elements */
-        .interactive-section {
-            background: linear-gradient(135deg, var(--primary), var(--dark));
-            color: white;
-            padding: 4rem;
-            border-radius: 8px;
-            margin: 4rem 0;
+
+        body.dark-mode tr:hover {
+            background-color: var(--hover-color-dark);
         }
-        
-        .interactive-section h3 {
-            color: white;
-            text-align: center;
-            margin-bottom: 3rem;
-            font-size: 2rem;
-        }
-        
-        .question {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 2rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-        }
-        
-        .question-title {
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            font-size: 1.4rem;
-            color: white;
-        }
-        
-        textarea {
-            width: 100%;
-            padding: 1.2rem;
-            border-radius: 6px;
-            border: none;
-            background-color: rgba(255, 255, 255, 0.9);
-            font-size: 1.1rem;
-            margin-top: 1.2rem;
-            resize: vertical;
-            min-height: 150px;
-        }
-        
-        .submit-btn {
-            display: block;
-            width: 100%;
-            padding: 1.2rem;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 2rem;
-        }
-        
-        .submit-btn:hover {
-            background-color: #c0392b;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 5rem 2rem 3rem;
-            margin-top: 5rem;
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-        }
-        
-        .footer-column h4 {
-            color: white;
-            margin-bottom: 2rem;
-            font-size: 1.4rem;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 1rem;
-        }
-        
-        .footer-links a {
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-        }
-        
-        .social-links {
+
+        /* Process Flow / List with Icon */
+        .feature {
             display: flex;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .social-links a {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.1);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s;
-            font-size: 1.2rem;
-        }
-        
-        .social-links a:hover {
-            background-color: var(--secondary);
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 3rem;
-            margin-top: 3rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #bdc3c7;
-            font-size: 0.9rem;
-        }
-        
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .animate {
-            opacity: 0;
-            animation: fadeIn 1s forwards;
-        }
-        
-        .delay-1 {
-            animation-delay: 0.2s;
-        }
-        
-        .delay-2 {
-            animation-delay: 0.4s;
-        }
-        
-        .delay-3 {
-            animation-delay: 0.6s;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            h1 {
-                font-size: 2.8rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.3rem;
-            }
-            
-            section {
-                padding: 3rem;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .navbar-container {
-                padding: 1rem;
-            }
-            
-            .nav-links {
-                position: fixed;
-                top: 70px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 70px);
-                background-color: var(--primary);
-                flex-direction: column;
-                align-items: center;
-                padding-top: 3rem;
-                transition: left 0.3s;
-            }
-            
-            .nav-links.active {
-                left: 0;
-            }
-            
-            .nav-links li {
-                margin: 1.5rem 0;
-            }
-            
-            .nav-links a {
-                color: white;
-                font-size: 1.3rem;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero {
-                padding: 7rem 1.5rem 8rem;
-            }
-            
-            h1 {
-                font-size: 2.5rem;
-            }
-            
-            section {
-                padding: 2rem;
-            }
-            
-            .feature {
-                flex-direction: column;
-            }
-            
-            .feature-icon {
-                margin-bottom: 1.5rem;
-                margin-right: 0;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.1rem;
-            }
-            
-            h2 {
-                font-size: 2rem;
-            }
-            
-            section {
-                padding: 1.5rem;
-            }
-            
-            .card-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            border-bottom: 1px dotted var(--secondary);
-            cursor: help;
-        }
-        
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 280px;
-            background-color: var(--primary);
-            color: white;
-            text-align: center;
+            align-items: flex-start;
+            gap: 25px;
+            background-color: var(--card-background-light);
+            padding: 30px;
             border-radius: 8px;
-            padding: 1.2rem;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 1rem;
-            font-weight: normal;
-            box-shadow: 0 10px 25px rgba(5, 5, 5, 0.2);
+            box-shadow: 0 4px 15px var(--shadow-light);
+            margin-top: 30px;
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
-        
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
+
+        body.dark-mode .feature {
+            background-color: var(--card-background-dark);
+            box-shadow: 0 4px 15px var(--shadow-dark);
         }
-        
-        /* Accordion */
-        .accordion {
-            margin: 3rem 0;
+
+        .feature-icon {
+            font-size: 4rem;
+            color: var(--primary-color);
+            flex-shrink: 0;
+            margin-top: 5px;
         }
-        
-        .accordion-item {
-            margin-bottom: 1.5rem;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+
+        body.dark-mode .feature-icon {
+            color: var(--primary-color-dark);
         }
-        
-        .accordion-header {
-            background-color: var(--light);
-            padding: 1.8rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            color: var(--primary);
-            transition: background-color 0.3s;
+
+        .feature-content ol {
+            list-style: decimal;
+            padding-left: 25px;
+            margin: 0;
         }
-        
-        .accordion-header:hover {
-            background-color: #e0e0e0;
+
+        .feature-content ol li {
+            margin-bottom: 12px;
+            font-size: 1.15rem;
+            color: var(--text-color-light);
         }
-        
-        .accordion-header::after {
-            content: '+';
-            font-size: 1.8rem;
-            color: var(--secondary);
-            transition: transform 0.3s;
+
+        body.dark-mode .feature-content ol li {
+            color: var(--text-color-dark);
         }
-        
-        .accordion-header.active::after {
-            content: '-';
+
+        .feature-content ol li strong {
+            color: var(--primary-color);
         }
-        
-        .accordion-content {
-            padding: 0;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            background-color: white;
+
+        body.dark-mode .feature-content ol li strong {
+            color: var(--primary-color-dark);
         }
-        
-        .accordion-content-inner {
-            padding: 2rem;
-        }
-        
-        /* Progress bars */
+
+        /* Progress Bars (Applications Section) */
         .progress-container {
-            margin: 2.5rem 0;
+            margin-bottom: 30px;
+            background-color: var(--card-background-light);
+            border-radius: 8px;
+            padding: 20px 25px;
+            box-shadow: 0 3px 10px var(--shadow-light);
+            transition: background-color 0.3s, box-shadow 0.3s;
         }
-        
+
+        body.dark-mode .progress-container {
+            background-color: var(--card-background-dark);
+            box-shadow: 0 3px 10px var(--shadow-dark);
+        }
+
         .progress-title {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 0.8rem;
-            font-weight: 500;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
         }
-        
+
+        body.dark-mode .progress-title {
+            color: var(--primary-color-dark);
+        }
+
         .progress-bar {
+            background-color: var(--border-color-light);
+            border-radius: 5px;
             height: 12px;
-            background-color: #ecf0f1;
-            border-radius: 6px;
             overflow: hidden;
         }
-        
+
+        body.dark-mode .progress-bar {
+            background-color: var(--border-color-dark);
+        }
+
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--secondary), var(--accent));
-            border-radius: 6px;
+            background-color: var(--primary-color);
+            background-image: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end)); /* Degradado */
             width: 0;
-            transition: width 1.5s ease-in-out;
+            transition: width 1.5s ease-out;
+            border-radius: 5px;
         }
-        
-        /* Cookie Banner */
-        .cookie-banner {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--dark);
-            color: white;
-            padding: 1.5rem;
+
+        body.dark-mode .progress-fill {
+            background-color: var(--primary-color-dark);
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--accent-color-dark));
+        }
+
+        /* Card Grid (Everyday Examples & Challenges/Ethics) */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background-color: var(--card-background-light);
+            padding: 35px;
+            border-radius: 10px;
+            box-shadow: 0 5px 18px var(--shadow-light);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.dark-mode .card {
+            background-color: var(--card-background-dark);
+            box-shadow: 0 4px 15px var(--shadow-dark);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px var(--shadow-light);
+        }
+
+        body.dark-mode .card:hover {
+            box-shadow: 0 6px 20px var(--shadow-dark);
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        body.dark-mode .card-icon {
+            color: var(--primary-color-dark);
+        }
+
+        /* Estilos para las imágenes dentro de las tarjetas */
+        .card-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .card-title {
+            color: var(--text-color-dark); /* Keep headings distinct in dark mode */
+        }
+
+        .card-content p {
+            font-size: 1rem;
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode .card-content p {
+            color: var(--text-color-dark);
+        }
+
+        /* Special style for Ethical Principles Cards */
+        .ethical-principle-card .card-icon {
+            font-size: 3.5rem; /* Ligeramente más pequeño que otros iconos de tarjeta si es necesario */
+            color: var(--accent-color); /* Color diferente para destacar */
+        }
+        body.dark-mode .ethical-principle-card .card-icon {
+            color: var(--accent-color-dark); /* Morado claro para iconos de principios en dark mode */
+        }
+        .ethical-principle-card .card-title {
+            color: var(--accent-color);
+        }
+        body.dark-mode .ethical-principle-card .card-title {
+            color: var(--accent-color-dark);
+        }
+
+        /* Ally Logos */
+        .ally-logo {
+            max-width: 180px; /* Tamaño más grande para logos de aliados */
+            height: 80px;
+            object-fit: contain;
+            margin: 15px auto;
+            filter: grayscale(100%); /* Desaturar logos por defecto */
+            opacity: 0.7;
+            transition: filter 0.3s ease, opacity 0.3s ease;
+        }
+        .ally-logo:hover {
+            filter: grayscale(0%); /* Color al hover */
+            opacity: 1;
+        }
+        body.dark-mode .ally-logo {
+            filter: invert(100%) grayscale(100%); /* Invertir y desaturar para dark mode */
+        }
+        body.dark-mode .ally-logo:hover {
+            filter: invert(0%) grayscale(0%); /* Volver a color original al hover en dark mode */
+        }
+
+        /* Interactive Section (Quiz) */
+        .interactive-section {
+            background-color: var(--card-background-light);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px var(--shadow-light);
+            margin-top: 40px;
+        }
+
+        body.dark-mode .interactive-section {
+            background-color: var(--card-background-dark);
+            box-shadow: 0 5px 20px var(--shadow-dark);
+        }
+
+        .section-description {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode .section-description {
+            color: var(--text-color-dark);
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .question-block {
+            background-color: var(--background-light);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px var(--shadow-light);
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        body.dark-mode .question-block {
+            background-color: var(--background-dark);
+            box-shadow: 0 2px 10px var(--shadow-dark);
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .question-text {
+            color: var(--accent-color);
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode .options label {
+            color: var(--text-color-dark);
+        }
+
+        .options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: var(--primary-color); /* Custom color for radio button */
+        }
+
+        body.dark-mode .options input[type="radio"] {
+            accent-color: var(--accent-color);
+        }
+
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            display: none; /* Hidden until feedback is shown */
+        }
+
+        .feedback.correct {
+            color: var(--accent-color);
+        }
+
+        .feedback.incorrect {
+            color: #dc3545; /* Rojo para incorrecto */
+        }
+
+        #submitQuiz {
+            display: block;
+            margin: 30px auto 0;
+            width: fit-content;
+        }
+
+        .quiz-result {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        body.dark-mode .quiz-result {
+            color: var(--accent-color);
+        }
+
+        /* Accordion (Glossary) */
+        .accordion {
+            margin-top: 30px;
+        }
+
+        .accordion-item {
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color-light);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        body.dark-mode .accordion-item {
+            border-color: var(--border-color-dark);
+        }
+
+        .accordion-header {
+            background-color: var(--primary-color);
+            background-image: linear-gradient(to right, var(--primary-gradient-start), var(--primary-gradient-end)); /* Degradado */
+            color: #fff;
+            padding: 20px 25px; /* Más padding */
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 999;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
+            font-weight: 700;
+            font-size: 1.3rem; /* Aumentado */
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
-        
-        .cookie-banner.show {
-            transform: translateY(0);
+
+        body.dark-mode .accordion-header {
+            background-color: var(--primary-color-dark);
+            background-image: linear-gradient(to right, var(--primary-color-dark), var(--accent-color-dark)); /* Degradado morado */
         }
-        
-        .cookie-text {
+
+        .accordion-header:hover {
+            background-image: linear-gradient(to right, var(--primary-gradient-end), var(--primary-gradient-start)); /* Degradado inverso */
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+        }
+
+        body.dark-mode .accordion-header:hover {
+            background-image: linear-gradient(to right, var(--accent-color-dark), var(--primary-color-dark));
+        }
+
+        .accordion-header.active {
+            background-image: linear-gradient(to right, var(--primary-gradient-end), var(--primary-gradient-start));
+        }
+
+        body.dark-mode .accordion-header.active {
+            background-image: linear-gradient(to right, var(--accent-color-dark), var(--primary-color-dark));
+        }
+
+        .accordion-header::after {
+            content: '\002B'; /* Plus sign */
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .accordion-header.active::after {
+            content: '\2212'; /* Minus sign */
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            background-color: var(--card-background-light);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out, background-color 0.3s;
+        }
+
+        body.dark-mode .accordion-content {
+            background-color: var(--card-background-dark);
+        }
+
+        .accordion-content-inner {
+            padding: 20px 25px;
+            color: var(--text-color-light);
+        }
+
+        body.dark-mode .accordion-content-inner {
+            color: var(--text-color-dark);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--background-dark);
+            color: var(--text-color-dark);
+            padding: 50px 20px 20px;
+            margin-top: 60px;
+            box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        body.dark-mode footer {
+            background-color: #1a1a1a; /* Even darker for dark mode footer */
+            box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto 30px;
+            gap: 30px;
+        }
+
+        .footer-column {
             flex: 1;
-            margin-right: 2rem;
+            min-width: 250px;
+            margin-bottom: 20px;
         }
-        
+
+        .footer-column h4 {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .footer-column p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: var(--text-color-dark);
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-links i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+
+        .social-links a {
+            color: var(--text-color-dark);
+            font-size: 1.5rem;
+            margin-right: 15px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 8px;
+        }
+
+        .footer-bottom a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Cookie Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--background-dark);
+            color: var(--text-color-dark);
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+        }
+
+        .cookie-banner.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .cookie-banner p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
         .cookie-btn {
-            background-color: var(--accent);
-            color: white;
+            background-color: var(--accent-color);
+            color: #fff;
             border: none;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
+            font-weight: 600;
             transition: background-color 0.3s;
         }
-        
+
         .cookie-btn:hover {
-            background-color: #c0392b;
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        /* Utility classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .search-highlight {
+            animation: highlight 2s ease-out forwards;
+        }
+
+        @keyframes highlight {
+            0% { background-color: yellow; padding: 5px; border-radius: 3px; }
+            100% { background-color: transparent; padding: 0; border-radius: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) { /* Ajustado el breakpoint para tabletas y móviles */
+            .nav-links {
+                /* Ocultar por defecto para móvil */
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 70px; /* Debajo de la navbar */
+                left: 0;
+                width: 100%;
+                background-color: var(--background-light);
+                box-shadow: 0 5px 10px var(--shadow-light);
+                padding: 15px 0;
+                transition: transform 0.3s ease-out;
+                transform: translateY(-100%);
+                align-items: center; /* Centrar enlaces en el menú móvil */
+            }
+
+            body.dark-mode .nav-links {
+                background-color: var(--background-dark);
+                box-shadow: 0 5px 10px var(--shadow-dark);
+            }
+
+            .nav-links.active {
+                display: flex;
+                transform: translateY(0);
+            }
+
+            .nav-links li {
+                margin: 0;
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 10px 0;
+            }
+
+            .mobile-menu-btn {
+                display: block; /* Mostrar solo en móvil */
+            }
+
+            .header-actions {
+                /* Asegurarse de que el search box y el toggle estén a la derecha en móvil */
+                margin-left: auto;
+                order: 3; /* Asegurar que aparezcan después del logo y del nav-links (cuando está oculto) */
+                gap: 10px; /* Reducir gap en móviles */
+            }
+
+            .search-box {
+                width: 150px; /* Reducir el ancho en móviles para dejar espacio al toggle y al menú */
+            }
+
+            .hero {
+                padding: 120px 15px 80px;
+                margin-top: 70px; /* Ensure space for fixed navbar */
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+            }
+
+            .feature-grid, .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature, .card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .feature-icon, .card-icon {
+                margin-bottom: 15px;
+            }
+
+            .feature-content ol {
+                padding-left: 0;
+                text-align: left;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-column {
+                min-width: unset;
+                width: 100%;
+                text-align: center;
+            }
+
+            .social-links {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            #searchResults {
+                width: calc(100% - 40px); /* Ajustar para padding del contenedor */
+                left: 20px;
+                right: 20px;
+            }
+
+            .content-image, .hero-logo {
+                max-width: 100%; /* Asegurar que las imágenes sean responsivas en móviles */
+            }
+
+            .video-container {
+                padding-bottom: 60%; /* Ajustar para aspecto en móviles si es necesario */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .feature-box, .card, .feature {
+                padding: 20px;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .accordion-header {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+
+            .search-box {
+                width: 120px; /* Reducir aún más en pantallas muy pequeñas */
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <a href="#" class="logo">
-                <i class="fas fa-chart-line"></i> DataEdu
-            </a>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
+    <header>
+        <nav class="navbar">
+            <a href="#" class="logo">DataEdu</a>
             <ul class="nav-links">
                 <li><a href="#big-data">Big Data</a></li>
                 <li><a href="#analisis-predictivo">Análisis Predictivo</a></li>
                 <li><a href="#aplicaciones">Aplicaciones</a></li>
                 <li><a href="#etica">Ética</a></li>
                 <li><a href="#interactivo">Interactivo</a></li>
+                <li><a href="#glosario">Glosario</a></li>
             </ul>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="hero-content">
-            <h1 class="animate">Explorando Big Data y Análisis Predictivo</h1>
-            <p class="hero-subtitle animate delay-1">La Guía Esencial para Entender el Futuro de los Datos</p>
-        </div>
+            <div class="header-actions">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Buscar..." aria-label="Buscar en el sitio">
+                    <button id="searchButton" aria-label="Iniciar búsqueda"><i class="fas fa-search"></i></button>
+                </div>
+                <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Activar modo oscuro">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="mobile-menu-btn" aria-label="Abrir menú de navegación" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
     </header>
 
-    <div class="container">
-        <!-- Big Data Section -->
-        <section id="big-data" class="animate delay-1">
-            <h2>¿Qué es Big Data? El Universo de la Información Masiva</h2>
-            <p>El término <strong>Big Data</strong> se refiere a conjuntos de datos tan <strong>vastos y complejos</strong> que las herramientas de software tradicionales no pueden capturarlos, procesarlos ni analizarlos eficientemente. Vivimos en una era donde cada interacción digital genera datos, creando oportunidades sin precedentes para obtener conocimientos valiosos.</p>
-            
-            <h3>Las "V" del Big Data</h3>
-            <div class="card-grid">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Volumen</h3>
-                        <p>La inmensa cantidad de datos generados cada segundo. Por ejemplo, cada minuto se envían 188 millones de correos electrónicos y se realizan 4.5 millones de búsquedas en Google.</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-tachometer-alt"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Velocidad</h3>
-                        <p>La rapidez con que se generan y procesan datos. Los sistemas modernos pueden analizar información en tiempo real, como las transacciones de tarjetas de crédito para detectar fraudes.</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-shapes"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Variedad</h3>
-                        <p>Diferentes formatos de datos: desde números en bases de datos (estructurados) hasta publicaciones en redes sociales, imágenes y videos (no estructurados).</p>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">Veracidad</h3>
-                        <p>La calidad y fiabilidad de los datos. Datos incorrectos pueden llevar a conclusiones erróneas, por lo que es crucial verificar su precisión.</p>
-                    </div>
-                </div>
+    <main class="container">
+        <section class="hero animate">
+            <div class="hero-content">
+                <img src="ImgenesBig/Blue Yellow Modern Heavy Equipment Industry Logo.png" alt="Logo de DataEdu" class="hero-logo">
+                <h1>Dominando Big Data y Análisis Predictivo</h1>
+                <p>Descubre cómo la ciencia de datos está transformando industrias y moldeando el futuro, desde la información hasta la predicción.</p>
+                <a href="#aplicaciones" class="btn">Explorar Aplicaciones</a>
             </div>
-            
-            <h3>Fuentes de Big Data</h3>
-            <div class="accordion">
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <span>Transacciones comerciales</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-content-inner">
-                            <p>Facturación, compras con tarjetas de crédito, registros de inventario y otras operaciones comerciales que generan datos estructurados. Estos datos son fundamentales para analizar patrones de compra y optimizar inventarios.</p>
-                        </div>
-                    </div>
+        </section>
+
+        <section id="big-data" class="animate delay-1">
+            <h2 class="text-center" id="que-es-big-data">¿Qué es Big Data? La Revolución de los Datos</h2>
+            <p class="text-center section-description">
+                Big Data se refiere a conjuntos de datos tan grandes y complejos que los métodos de procesamiento de datos tradicionales son insuficientes. Se caracteriza por las "Vs": Volumen, Velocidad, Variedad y, más recientemente, Veracidad y Valor.
+            </p>
+            <img src="ImgenesBig/conc01.png" alt="Ilustración de concepto Big Data" class="content-image">
+
+            <div class="feature-grid">
+                <div class="feature-box">
+                    <div class="icon"><i class="fas fa-database" aria-hidden="true"></i></div>
+                    <h3>Volumen</h3>
+                    <p>Cantidades masivas de datos generados cada segundo. Estamos hablando de terabytes, petabytes y exabytes de información.</p>
                 </div>
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <span>Redes sociales y web</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-content-inner">
-                            <p>Interacciones en plataformas sociales, comentarios, likes, shares, y datos de navegación web que revelan preferencias del consumidor. Cada like, comentario o compartir proporciona información valiosa sobre el comportamiento del usuario.</p>
-                        </div>
-                    </div>
+                <div class="feature-box">
+                    <div class="icon"><i class="fas fa-tachometer-alt" aria-hidden="true"></i></div>
+                    <h3>Velocidad</h3>
+                    <p>La rapidez con la que los datos se generan, recopilan y procesan. Datos en tiempo real de sensores, redes sociales, transacciones.</p>
                 </div>
-                <div class="accordion-item">
-                    <div class="accordion-header">
-                        <span>Dispositivos IoT</span>
-                    </div>
-                    <div class="accordion-content">
-                        <div class="accordion-content-inner">
-                            <p>Sensores en dispositivos inteligentes, maquinaria industrial, wearables y otros equipos conectados que generan datos constantemente. Un solo avión comercial puede generar más de 500 GB de datos por vuelo.</p>
-                        </div>
-                    </div>
+                <div class="feature-box">
+                    <div class="icon"><i class="fas fa-layer-group" aria-hidden="true"></i></div>
+                    <h3>Variedad</h3>
+                    <p>Diferentes tipos de datos: estructurados (bases de datos), semiestructurados (JSON, XML) y no estructurados (texto, imágenes, videos).</p>
+                </div>
+                <div class="feature-box">
+                    <div class="icon"><i class="fas fa-check-circle" aria-hidden="true"></i></div>
+                    <h3>Veracidad</h3>
+                    <p>La calidad y fiabilidad de los datos. Datos sucios o imprecisos pueden llevar a análisis erróneos y decisiones equivocadas.</p>
+                </div>
+                <div class="feature-box">
+                    <div class="icon"><i class="fas fa-dollar-sign" aria-hidden="true"></i></div>
+                    <h3>Valor</h3>
+                    <p>La capacidad de transformar estos datos en información útil y monetizable para la toma de decisiones estratégicas.</p>
                 </div>
             </div>
         </section>
 
-        <!-- Análisis Predictivo Section -->
-        <section id="analisis-predictivo" class="animate delay-2">
-            <h2>Análisis Predictivo: Anticipando el Futuro</h2>
-            <p>El <strong>Análisis Predictivo</strong> es la aplicación de técnicas estadísticas y de aprendizaje automático para interpretar datos, detectar patrones y generar pronósticos cuantitativos sobre el futuro. Su propósito es tomar mejores decisiones con respecto al futuro basándose en datos históricos y actuales.</p>
-            
-            <div class="feature">
-                <div class="feature-icon">
-                    <i class="fas fa-brain"></i>
-                </div>
-                <div class="feature-content">
-                    <h3>IA y Machine Learning como Motores</h3>
-                    <p>La base tecnológica que impulsa este análisis es la <strong>Inteligencia Artificial (IA)</strong> y el <strong>Machine Learning (ML)</strong>. El Machine Learning, una rama de la IA, se centra en aprender patrones a partir de datos. Sus algoritmos son capaces de simular el comportamiento humano y manejar tareas demasiado complejas o con grandes volúmenes de datos que superan la capacidad humana, adaptándose a los cambios del entorno.</p>
-                </div>
-            </div>
-            
-            <h3>Modelos Predictivos</h3>
+        <section id="analisis-predictivo" class="animate delay-1">
+            <h2 class="text-center" id="poder-analisis-predictivo">El Poder del Análisis Predictivo</h2>
+            <p class="text-center section-description">
+                El análisis predictivo utiliza datos históricos para hacer predicciones sobre eventos futuros. Combina técnicas estadísticas, modelos de Machine Learning y minería de datos para identificar patrones y probabilidades.
+            </p>
+            <img src="ImgenesBig/conc02.jpg" alt="Diagrama de Análisis Predictivo" class="content-image">
+
+            <h3 id="tipos-modelos-predictivos">Tipos Comunes de Modelos Predictivos</h3>
             <table>
                 <thead>
                     <tr>
-                        <th>Modelo</th>
+                        <th>Clasificación</th>
                         <th>Descripción</th>
-                        <th>Aplicación</th>
+                        <th>Ejemplos de Uso</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -887,11 +1409,11 @@
                     </tr>
                 </tbody>
             </table>
-            
-            <h3>Proceso de Análisis Predictivo</h3>
+
+            <h3 id="proceso-analisis-predictivo">Proceso de Análisis Predictivo</h3>
             <div class="feature">
                 <div class="feature-icon">
-                    <i class="fas fa-project-diagram"></i>
+                    <i class="fas fa-project-diagram" aria-hidden="true"></i>
                 </div>
                 <div class="feature-content">
                     <ol>
@@ -908,51 +1430,52 @@
             </div>
         </section>
 
-        <!-- Aplicaciones Section -->
         <section id="aplicaciones" class="animate delay-1">
-            <h2>Aplicaciones y Ejemplos: El Impacto en el Mundo Real</h2>
-            
+            <h2 id="aplicaciones-impacto">Aplicaciones y Ejemplos: El Impacto en el Mundo Real</h2>
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/ZBMhGYo5yBI?si=OU5OQpORQG7l7SFs" title="Ejemplo de Aplicación de Big Data y Análisis Predictivo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <p class="section-description">Mira este video para entender mejor cómo se aplican estos conceptos en la vida real.</p>
+
+
             <div class="progress-container">
                 <div class="progress-title">
                     <span>Fabricación y Producción (Industria 4.0)</span>
-                    <span>85%</span>
+                    <span data-progress-value="85%">85%</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 85%"></div>
+                    <div class="progress-fill"></div>
                 </div>
             </div>
-            
-            <p>Se <strong>optimizan los procesos de producción</strong>, identificando <strong>fallos de calidad tempranamente</strong> y permitiendo <strong>medidas correctivas más rápidas</strong>. Se puede <strong>predecir los resultados futuros</strong> y utilizar datos históricos para identificar modelos en el proceso de producción. El mantenimiento predictivo puede reducir los tiempos de inactividad en hasta un 50%.</p>
-            
+            <p>Se optimizan los procesos de producción, identificando fallos de calidad tempranamente y permitiendo medidas correctivas más rápidas. Se puede predecir los resultados futuros y utilizar datos históricos para identificar modelos en el proceso de producción. El mantenimiento predictivo puede reducir los tiempos de inactividad en hasta un 50%.</p>
+
             <div class="progress-container">
                 <div class="progress-title">
                     <span>Cadena de Suministro</span>
-                    <span>78%</span>
+                    <span data-progress-value="78%">78%</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 78%"></div>
+                    <div class="progress-fill"></div>
                 </div>
             </div>
-            
-            <p>El análisis predictivo examina ventas anteriores, tendencias de inventario, datos históricos y externos para <strong>optimizar inventario, espacio de almacén y decisiones de envío</strong>. Empresas como Amazon utilizan estos modelos para predecir la demanda con semanas de anticipación, reduciendo costos de almacenamiento en hasta un 40%.</p>
-            
+            <p>El análisis predictivo examina ventas anteriores, tendencias de inventario, datos históricos y externos para optimizar inventario, espacio de almacén y decisiones de envío. Empresas como Amazon utilizan estos modelos para predecir la demanda con semanas de anticipación, reduciendo costos de almacenamiento en hasta un 40%.</p>
+
             <div class="progress-container">
                 <div class="progress-title">
                     <span>Marketing y Experiencia del Cliente</span>
-                    <span>92%</span>
+                    <span data-progress-value="92%">92%</span>
                 </div>
                 <div class="progress-bar">
-                    <div class="progress-fill" style="width: 92%"></div>
+                    <div class="progress-fill"></div>
                 </div>
             </div>
-            
-            <p>Permite una <strong>comprensión más profunda de las necesidades y gustos de los clientes</strong>. Netflix utiliza algoritmos predictivos para recomendar contenido, lo que representa el 80% de lo que los usuarios eligen ver. Los modelos de churn prediction pueden identificar con hasta un 90% de precisión qué clientes están en riesgo de abandonar un servicio.</p>
-            
-            <h3>Ejemplos Cotidianos</h3>
+            <p>Permite una comprensión más profunda de las necesidades y gustos de los clientes. Netflix utiliza algoritmos predictivos para recomendar contenido, lo que representa el 80% de lo que los usuarios eligen ver. Los modelos de churn prediction pueden identificar con hasta un 90% de precisión qué clientes están en riesgo de abandonar un servicio.</p>
+
+            <h3 id="ejemplos-cotidianos">Ejemplos Cotidianos</h3>
             <div class="card-grid">
                 <div class="card">
                     <div class="card-icon">
-                        <i class="fas fa-map-marked-alt"></i>
+                        <i class="fas fa-map-marked-alt" aria-hidden="true"></i>
                     </div>
                     <div class="card-content">
                         <h3 class="card-title">Google Maps</h3>
@@ -961,7 +1484,7 @@
                 </div>
                 <div class="card">
                     <div class="card-icon">
-                        <i class="fas fa-shopping-cart"></i>
+                        <i class="fas fa-shopping-cart" aria-hidden="true"></i>
                     </div>
                     <div class="card-content">
                         <h3 class="card-title">Recomendaciones de Productos</h3>
@@ -970,7 +1493,7 @@
                 </div>
                 <div class="card">
                     <div class="card-icon">
-                        <i class="fas fa-credit-card"></i>
+                        <i class="fas fa-credit-card" aria-hidden="true"></i>
                     </div>
                     <div class="card-content">
                         <h3 class="card-title">Detección de Fraude</h3>
@@ -980,24 +1503,18 @@
             </div>
         </section>
 
-        <!-- Ética Section -->
         <section id="etica" class="animate delay-2">
-            <h2>Desafíos y Consideraciones Éticas</h2>
-            
+            <h2 id="desafios-consideraciones-eticas">Desafíos y Consideraciones Éticas</h2>
             <div class="card-grid">
                 <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
+                    <img src="ImgenesBig/privacidad.jpg" alt="Icono de Privacidad y Seguridad" class="card-image">
                     <div class="card-content">
                         <h3 class="card-title">Privacidad y Seguridad</h3>
                         <p>Con el RGPD y otras regulaciones, las empresas deben garantizar la protección de datos personales. Técnicas como la anonimización y el cifrado son esenciales.</p>
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-balance-scale"></i>
-                    </div>
+                    <img src="ImgenesBig/conc01.png" alt="Icono de Sesgos Algorítmicos" class="card-image">
                     <div class="card-content">
                         <h3 class="card-title">Sesgos Algorítmicos</h3>
                         <p>Los modelos pueden perpetuar discriminación si los datos de entrenamiento son sesgados. Casos famosos incluyen sistemas de contratación que discriminaban por género.</p>
@@ -1005,7 +1522,7 @@
                 </div>
                 <div class="card">
                     <div class="card-icon">
-                        <i class="fas fa-eye"></i>
+                        <i class="fas fa-eye" aria-hidden="true"></i>
                     </div>
                     <div class="card-content">
                         <h3 class="card-title">Transparencia</h3>
@@ -1013,22 +1530,62 @@
                     </div>
                 </div>
             </div>
-            
-            <h3>Principios Éticos Fundamentales</h3>
-            <ul>
-                <li><strong>Responsabilidad:</strong> Las organizaciones deben ser responsables de sus sistemas de IA y sus resultados.</li>
-                <li><strong>Equidad:</strong> Los sistemas deben tomar decisiones justas y no discriminatorias.</li>
-                <li><strong>Transparencia:</strong> Los procesos deben ser comprensibles y explicables.</li>
-                <li><strong>Privacidad:</strong> Respeto por la privacidad y protección de datos personales.</li>
-                <li><strong>Beneficio Social:</strong> La tecnología debe usarse para el beneficio de la sociedad.</li>
-            </ul>
-            
+
+            <h3 id="principios-eticos-fundamentales">Principios Éticos Fundamentales</h3>
+            <div class="card-grid">
+                <div class="card ethical-principle-card">
+                    <div class="card-icon">
+                        <i class="fas fa-balance-scale" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Responsabilidad</h3>
+                        <p>Las organizaciones deben ser responsables de sus sistemas de IA y sus resultados, asegurando un uso ético y legal.</p>
+                    </div>
+                </div>
+                <div class="card ethical-principle-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Equidad</h3>
+                        <p>Los sistemas deben tomar decisiones justas y no discriminatorias, evitando la amplificación de sesgos existentes en los datos.</p>
+                    </div>
+                </div>
+                <div class="card ethical-principle-card">
+                    <div class="card-icon">
+                        <i class="fas fa-code-branch" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Transparencia</h3>
+                        <p>Los procesos de los algoritmos deben ser comprensibles y explicables, evitando los "modelos de caja negra".</p>
+                    </div>
+                </div>
+                <div class="card ethical-principle-card">
+                    <div class="card-icon">
+                        <i class="fas fa-shield-alt" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Protección de Datos</h3>
+                        <p>Respeto por la privacidad y protección robusta de datos personales, cumpliendo con regulaciones como el RGPD.</p>
+                    </div>
+                </div>
+                <div class="card ethical-principle-card">
+                    <div class="card-icon">
+                        <i class="fas fa-globe-americas" aria-hidden="true"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">Beneficio Social</h3>
+                        <p>La tecnología debe usarse para el bienestar y el beneficio general de la sociedad, contribuyendo positivamente.</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="feature">
                 <div class="feature-icon">
-                    <i class="fas fa-gavel"></i>
+                    <i class="fas fa-gavel" aria-hidden="true"></i>
                 </div>
                 <div class="feature-content">
-                    <h3>Regulaciones Clave</h3>
+                    <h3 id="regulaciones-clave">Regulaciones Clave</h3>
                     <p><strong>RGPD (UE):</strong> Establece estándares estrictos para el manejo de datos personales de ciudadanos europeos, incluyendo el "derecho a la explicación" de decisiones automatizadas.</p>
                     <p><strong>CCPA (California):</strong> Similar al RGPD pero aplicable en California, otorga a los consumidores derechos sobre sus datos personales.</p>
                     <p><strong>LOPDGDD (España):</strong> Adaptación española del RGPD con especificaciones adicionales para el contexto nacional.</p>
@@ -1036,65 +1593,98 @@
             </div>
         </section>
 
-        <!-- Interactive Section -->
         <section id="interactivo" class="interactive-section animate delay-3">
-            <h3>¡Ponga a Prueba su Comprensión!</h3>
-            <p style="text-align: center; margin-bottom: 3rem;">Ahora que hemos explorado los fundamentos del Big Data y el Análisis Predictivo, le invitamos a reflexionar sobre sus implicaciones.</p>
-            
-            <div class="question">
-                <div class="question-title">1. Desafío Ético en la Personalización</div>
-                <p>Las empresas usan análisis predictivo para personalizar ofertas de productos y servicios (como las recomendaciones de Netflix o Amazon). ¿Qué <strong>límites éticos</strong> considerarías fundamentales para asegurar que esta personalización no se convierta en una invasión de la privacidad o manipulación, y cómo los comunicarías de manera efectiva a los usuarios?</p>
-                <textarea placeholder="Escribe tu respuesta aquí..."></textarea>
+            <h2>Sección Interactiva: ¡Pon a Prueba tus Conocimientos!</h2>
+            <p class="section-description">Responde estas preguntas de opción múltiple para consolidar lo aprendido sobre Big Data y Análisis Predictivo.</p>
+
+            <div class="quiz-container">
+                <div class="question-block" data-question="1">
+                    <p class="question-text">1. ¿Cuál es el principal desafío de Big Data?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="a"> A) Almacenamiento eficiente.</label>
+                        <label><input type="radio" name="q1" value="b"> B) Velocidad de procesamiento.</label>
+                        <label><input type="radio" name="q1" value="c"> C) Volumen, Velocidad y Variedad de datos.</label>
+                        <label><input type="radio" name="q1" value="d"> D) Seguridad de la información.</label>
+                    </div>
+                    <div class="feedback" id="feedback1"></div>
+                </div>
+
+                <div class="question-block" data-question="2">
+                    <p class="question-text">2. ¿Qué tecnología NO es comúnmente asociada con Big Data?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="a"> A) Hadoop.</label>
+                        <label><input type="radio" name="q2" value="b"> B) SQL Server.</label>
+                        <label><input type="radio" name="q2" value="c"> C) Spark.</label>
+                        <label><input type="radio" name="q2" value="d"> D) NoSQL databases.</label>
+                    </div>
+                    <div class="feedback" id="feedback2"></div>
+                </div>
+
+                <div class="question-block" data-question="3">
+                    <p class="question-text">3. ¿Qué es el Análisis Predictivo?</p>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="a"> A) Análisis de datos pasados para entender eventos.</label>
+                        <label><input type="radio" name="q3" value="b"> B) Uso de datos para predecir eventos futuros.</label>
+                        <label><input type="radio" name="q3" value="c"> C) Creación de visualizaciones de datos.</label>
+                        <label><input type="radio" name="q3" value="d"> D) Recopilación de grandes volúmenes de datos.</label>
+                    </div>
+                    <div class="feedback" id="feedback3"></div>
+                </div>
+
+                <div class="question-block" data-question="4">
+                    <p class="question-text">4. Un ejemplo de aplicación del análisis predictivo en medicina es:</p>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="a"> A) Almacenar historiales clínicos de pacientes.</label>
+                        <label><input type="radio" name="q4" value="b"> B) Predecir la probabilidad de desarrollar una enfermedad.</label>
+                        <label><input type="radio" name="q4" value="c"> C) Digitalizar recetas médicas antiguas.</label>
+                        <label><input type="radio" name="q4" value="d"> D) Realizar encuestas de satisfacción del paciente.</label>
+                    </div>
+                    <div class="feedback" id="feedback4"></div>
+                </div>
+
+                <button id="submitQuiz" class="btn">Comprobar Respuestas</button>
+                <div id="quizResult" class="quiz-result"></div>
             </div>
-            
-            <div class="question">
-                <div class="question-title">2. Preparación para el Futuro</div>
-                <p>Más allá de 2024, se espera que el <strong>Big Data y la IA estén aún más integrados</strong> en todas las decisiones y que la <strong>computación cuántica revolucione el procesamiento de datos</strong>. Desde una perspectiva educativa, ¿qué <strong>nuevas habilidades o áreas de conocimiento</strong> considera que serán cruciales para los profesionales y la sociedad en general para navegar este futuro de manera responsable y aprovechar al máximo estas tecnologías?</p>
-                <textarea placeholder="Escribe tu respuesta aquí..."></textarea>
-            </div>
-            
-            <button class="submit-btn">Enviar Reflexiones</button>
         </section>
-        
-        <!-- Glosario Section -->
-        <section class="animate delay-1">
+
+        <section id="glosario" class="animate delay-1">
             <h2>Glosario de Términos</h2>
             <div class="accordion">
                 <div class="accordion-item">
-                    <div class="accordion-header">
+                    <div class="accordion-header" role="button" aria-expanded="false" aria-controls="content-big-data-glossary">
                         <span>Big Data</span>
                     </div>
-                    <div class="accordion-content">
+                    <div id="content-big-data-glossary" class="accordion-content">
                         <div class="accordion-content-inner">
                             <p>Conjuntos de datos tan grandes y complejos que requieren herramientas especializadas para su almacenamiento, procesamiento y análisis. Se caracterizan por las 4 V's: Volumen, Velocidad, Variedad y Veracidad.</p>
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <div class="accordion-header">
+                    <div class="accordion-header" role="button" aria-expanded="false" aria-controls="content-analisis-predictivo-glossary">
                         <span>Análisis Predictivo</span>
                     </div>
-                    <div class="accordion-content">
+                    <div id="content-analisis-predictivo-glossary" class="accordion-content">
                         <div class="accordion-content-inner">
                             <p>Uso de técnicas estadísticas y de machine learning para analizar datos actuales e históricos y hacer predicciones sobre eventos futuros o comportamientos.</p>
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <div class="accordion-header">
+                    <div class="accordion-header" role="button" aria-expanded="false" aria-controls="content-machine-learning-glossary">
                         <span>Machine Learning</span>
                     </div>
-                    <div class="accordion-content">
+                    <div id="content-machine-learning-glossary" class="accordion-content">
                         <div class="accordion-content-inner">
                             <p>Rama de la inteligencia artificial que permite a los sistemas aprender patrones a partir de datos sin ser explícitamente programados, mejorando su rendimiento con la experiencia.</p>
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
-                    <div class="accordion-header">
+                    <div class="accordion-header" role="button" aria-expanded="false" aria-controls="content-iot-glossary">
                         <span>IoT (Internet de las Cosas)</span>
                     </div>
-                    <div class="accordion-content">
+                    <div id="content-iot-glossary" class="accordion-content">
                         <div class="accordion-content-inner">
                             <p>Red de dispositivos físicos conectados a internet que recopilan e intercambian datos. Estos dispositivos generan grandes volúmenes de datos que pueden ser analizados.</p>
                         </div>
@@ -1102,19 +1692,18 @@
                 </div>
             </div>
         </section>
-    </div>
 
-    <!-- Footer -->
+    </main>
     <footer>
         <div class="footer-content">
             <div class="footer-column">
                 <h4>DataEdu</h4>
                 <p>Explorando el futuro de los datos y la inteligencia artificial para un mundo más inteligente y ético.</p>
                 <div class="social-links">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-github"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+                    <a href="#" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
                 </div>
             </div>
             <div class="footer-column">
@@ -1138,9 +1727,9 @@
             <div class="footer-column">
                 <h4>Contacto</h4>
                 <ul class="footer-links">
-                    <li><i class="fas fa-envelope"></i> infolosaprobados@dataedu.com</li>
-                    <li><i class="fas fa-phone"></i> +51 936 913 603</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Cusco, Peru</li>
+                    <li><i class="fas fa-envelope" aria-hidden="true"></i> infoLosAprobados@dataedu.com</li>
+                    <li><i class="fas fa-phone" aria-hidden="true"></i> +51 936 913 603</li>
+                    <li><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Cusco, Perú</li>
                 </ul>
             </div>
         </div>
@@ -1149,70 +1738,81 @@
         </div>
     </footer>
 
-    <!-- Cookie Banner -->
-    <div class="cookie-banner">
+    <div class="cookie-banner" role="dialog" aria-live="polite" aria-label="Declaración de uso de cookies">
         <div class="cookie-text">
             <p>Utilizamos cookies para mejorar tu experiencia en nuestro sitio web. Al continuar navegando, aceptas nuestro uso de cookies.</p>
         </div>
-        <button class="cookie-btn">Aceptar</button>
+        <button class="cookie-btn" aria-label="Aceptar uso de cookies">Aceptar</button>
     </div>
 
     <script>
         // Mobile Menu Toggle
         const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
         const navLinks = document.querySelector('.nav-links');
-        
+
         mobileMenuBtn.addEventListener('click', () => {
+            const isExpanded = mobileMenuBtn.getAttribute('aria-expanded') === 'true'; // Simplificado
+            mobileMenuBtn.setAttribute('aria-expanded', !isExpanded);
             navLinks.classList.toggle('active');
         });
-        
+
         // Smooth Scrolling for Navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
-                
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-                
-                // Close mobile menu if open
-                if (navLinks.classList.contains('active')) {
-                    navLinks.classList.remove('active');
+
+                if (targetElement) { // Asegúrate de que el elemento exista
+                    // Adjust scroll position for fixed header
+                    const headerOffset = document.querySelector('.navbar')?.offsetHeight || 0; // Añadido optional chaining y fallback
+                    const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - headerOffset - 20; // Added extra padding
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+
+                    // Close mobile menu if open
+                    if (navLinks.classList.contains('active')) {
+                        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+                        navLinks.classList.remove('active');
+                    }
                 }
             });
         });
-        
+
         // Navbar Scroll Effect
         window.addEventListener('scroll', () => {
             const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
+            if (navbar) { // Asegúrate de que la navbar exista
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
             }
         });
-        
+
         // Accordion Functionality
         const accordionHeaders = document.querySelectorAll('.accordion-header');
-        
         accordionHeaders.forEach(header => {
             header.addEventListener('click', () => {
-                const accordionItem = header.parentElement;
                 const accordionContent = header.nextElementSibling;
-                
+                const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
                 // Close all other items
-                document.querySelectorAll('.accordion-content').forEach(content => {
-                    if (content !== accordionContent && content.style.maxHeight) {
-                        content.style.maxHeight = null;
-                        content.previousElementSibling.classList.remove('active');
+                accordionHeaders.forEach(otherHeader => { // Usar la constante existente
+                    if (otherHeader !== header && otherHeader.getAttribute('aria-expanded') === 'true') {
+                        otherHeader.setAttribute('aria-expanded', 'false');
+                        otherHeader.classList.remove('active');
+                        otherHeader.nextElementSibling.style.maxHeight = null;
                     }
                 });
-                
+
                 // Toggle current item
+                header.setAttribute('aria-expanded', !isExpanded);
                 header.classList.toggle('active');
                 if (accordionContent.style.maxHeight) {
                     accordionContent.style.maxHeight = null;
@@ -1221,83 +1821,298 @@
                 }
             });
         });
-        
+
         // Open first accordion by default
         if (accordionHeaders.length > 0) {
-            accordionHeaders[0].click();
+            // Retraso para asegurar que el contenido se ha renderizado y scrollHeight es correcto
+            setTimeout(() => {
+                accordionHeaders[0].click();
+            }, 100);
         }
-        
-        // Animate progress bars when they come into view
+
+        // Animate progress bars when they come into view (Consider using IntersectionObserver here for consistency)
         const progressBars = document.querySelectorAll('.progress-fill');
-        
         const animateProgressBars = () => {
             progressBars.forEach(bar => {
                 const rect = bar.parentElement.getBoundingClientRect();
-                if (rect.top < window.innerHeight - 100) {
-                    bar.style.width = bar.parentElement.previousElementSibling.lastElementChild.textContent;
+                // Mejorado: Animar cuando la parte inferior del elemento entra en la vista
+                if (rect.top < window.innerHeight - 50 && rect.bottom > 0) {
+                    const progressBarContainer = bar.closest('.progress-container');
+                    const progressValueSpan = progressBarContainer?.querySelector('[data-progress-value]'); // Añadido optional chaining
+                    if (progressValueSpan) {
+                        bar.style.width = progressValueSpan.getAttribute('data-progress-value');
+                    }
                 }
             });
         };
-        
-        // Initial check
+
+        // Initial check and check on scroll
         animateProgressBars();
-        
-        // Check on scroll
         window.addEventListener('scroll', animateProgressBars);
-        
-        // Form submission
-        const contactForm = document.querySelector('.interactive-section');
-        const submitBtn = contactForm.querySelector('.submit-btn');
-        
-        submitBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            const textareas = contactForm.querySelectorAll('textarea');
-            let allFilled = true;
-            
-            textareas.forEach(textarea => {
-                if (textarea.value.trim() === '') {
-                    allFilled = false;
-                    textarea.style.border = '2px solid var(--accent)';
+
+        // Quiz Logic
+        const quizQuestions = {
+            q1: 'c', // Volumen, Velocidad y Variedad de datos
+            q2: 'b', // SQL Server
+            q3: 'b', // Uso de datos para predecir eventos futuros.
+            q4: 'b'  // Predecir la probabilidad de desarrollar una enfermedad.
+        };
+
+        document.getElementById('submitQuiz').addEventListener('click', () => {
+            let score = 0;
+            const totalQuestions = Object.keys(quizQuestions).length;
+
+            for (let i = 1; i <= totalQuestions; i++) {
+                const questionName = `q${i}`;
+                const selectedOption = document.querySelector(`input[name="${questionName}"]:checked`);
+                const feedbackDiv = document.getElementById(`feedback${i}`);
+                const questionBlock = document.querySelector(`.question-block[data-question="${i}"]`);
+
+                if (selectedOption) {
+                    if (selectedOption.value === quizQuestions[questionName]) {
+                        feedbackDiv.textContent = '¡Correcto!';
+                        feedbackDiv.className = 'feedback correct';
+                        score++;
+                        questionBlock.style.border = '2px solid var(--accent-color)'; // Green border for correct
+                    } else {
+                        feedbackDiv.textContent = `Incorrecto. La respuesta correcta es ${quizQuestions[questionName].toUpperCase()}.`;
+                        feedbackDiv.className = 'feedback incorrect';
+                        questionBlock.style.border = '2px solid #dc3545'; // Red border for incorrect
+                    }
                 } else {
-                    textarea.style.border = 'none';
+                    feedbackDiv.textContent = 'Por favor, selecciona una opción.';
+                    feedbackDiv.className = 'feedback incorrect';
+                    questionBlock.style.border = '2px solid #dc3545'; // Red border for unanswered
                 }
-            });
-            
-            if (allFilled) {
-                alert('¡Gracias por tus reflexiones! Tus respuestas han sido enviadas.');
-                textareas.forEach(textarea => {
-                    textarea.value = '';
-                });
-            } else {
-                alert('Por favor, responde todas las preguntas antes de enviar.');
+                feedbackDiv.style.display = 'block';
             }
+
+            const quizResultDiv = document.getElementById('quizResult');
+            quizResultDiv.textContent = `Obtuviste ${score} de ${totalQuestions} respuestas correctas.`;
         });
-        
+
+        // Form submission (original, but quiz section used this ID)
+        // If there's another form, use a unique ID for its container.
+        const contactForm = document.querySelector('.interactive-section');
+        if (contactForm) {
+            const submitBtn = document.getElementById('submitQuiz'); // Changed to quiz submit button
+            const formMessage = document.getElementById('quizResult'); // Using quiz result div as message area
+
+            if (submitBtn) { // Ensure submitBtn exists
+                submitBtn.addEventListener('click', (e) => {
+                    // Quiz logic already handles feedback, this part might be redundant or needs adjustment for a separate form.
+                    // Keeping it here for structural completeness if original intent was broader form validation.
+                });
+            }
+        }
+
+
         // Show cookie banner after delay
-        setTimeout(() => {
-            document.querySelector('.cookie-banner').classList.add('show');
-        }, 2000);
-        
-        // Close cookie banner
-        document.querySelector('.cookie-btn').addEventListener('click', () => {
-            document.querySelector('.cookie-banner').classList.remove('show');
-        });
-        
+        const cookieBanner = document.querySelector('.cookie-banner');
+        if (cookieBanner) { // Asegúrate de que el banner exista
+            setTimeout(() => {
+                cookieBanner.classList.add('show');
+            }, 2000);
+
+            // Close cookie banner
+            const cookieBtn = document.querySelector('.cookie-btn');
+            if (cookieBtn) { // Asegúrate de que el botón exista
+                cookieBtn.addEventListener('click', () => {
+                    cookieBanner.classList.remove('show');
+                    // Store a cookie to remember user acceptance for future visits (beyond this scope)
+                });
+            }
+        }
+
         // Intersection Observer for animations
         const animateElements = document.querySelectorAll('.animate');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.animationPlayState = 'running';
+        if (animateElements.length > 0) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.animationPlayState = 'running';
+                        observer.unobserve(entry.target); // Stop observing once animated
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        // Dark Mode Toggle
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        if (darkModeToggle) { // Asegúrate de que el botón exista
+            darkModeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+
+                // Save user's preference and update aria-label
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>'; // Change icon to sun
+                    darkModeToggle.setAttribute('aria-label', 'Activar modo claro');
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>'; // Change icon to moon
+                    darkModeToggle.setAttribute('aria-label', 'Activar modo oscuro');
                 }
             });
-        }, { threshold: 0.1 });
-        
-        animateElements.forEach(element => {
-            observer.observe(element);
-        });
+
+            // Check for user's preferred theme on page load
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                darkModeToggle.innerHTML = '<i class="fas fa-sun"></i>'; // Set icon to sun if dark mode is active
+                darkModeToggle.setAttribute('aria-label', 'Activar modo claro');
+            } else {
+                darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>'; // Set icon to moon if light mode is active or no preference
+                darkModeToggle.setAttribute('aria-label', 'Activar modo oscuro');
+            }
+        }
+
+        // Search Functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const searchBox = document.querySelector('.search-box');
+        const searchResults = document.createElement('ul');
+        searchResults.id = 'searchResults';
+
+        if (searchBox) { // Asegúrate de que el contenedor de búsqueda exista
+            searchBox.appendChild(searchResults);
+        }
+
+        if (searchButton && searchInput) { // Asegúrate de que los elementos de búsqueda existan
+            searchButton.addEventListener('click', performSearch);
+            searchInput.addEventListener('keyup', (event) => {
+                if (event.key === 'Enter') {
+                    performSearch();
+                } else if (searchInput.value.length > 2) { // Show suggestions after 2 characters
+                    showSuggestions();
+                } else {
+                    searchResults.style.display = 'none';
+                    searchResults.innerHTML = '';
+                }
+            });
+            searchInput.addEventListener('focus', () => {
+                if (searchInput.value.length > 2) {
+                    showSuggestions();
+                }
+            });
+            searchInput.addEventListener('blur', (event) => {
+                // Pequeño retraso para permitir clics en las sugerencias
+                setTimeout(() => {
+                    if (!searchResults.contains(event.relatedTarget)) { // Verificar si el elemento relacionado no es parte de los resultados de búsqueda
+                        searchResults.style.display = 'none';
+                    }
+                }, 100);
+            });
+        }
+
+
+        function performSearch() {
+            const query = searchInput.value.toLowerCase();
+            searchResults.style.display = 'none'; // Hide suggestions when performing search
+            searchResults.innerHTML = '';
+
+            if (query.trim() === '') {
+                alert('Por favor, ingresa un término de búsqueda.');
+                return;
+            }
+
+            let found = false;
+            document.querySelectorAll('section, p, h1, h2, h3, h4, li').forEach(element => {
+                if (element.textContent.toLowerCase().includes(query)) {
+                    // Scroll to the first found element
+                    if (!found) {
+                        element.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        // Usar una clase para el resaltado para transiciones más suaves
+                        element.classList.add('search-highlight');
+                        setTimeout(() => {
+                            element.classList.remove('search-highlight'); // Remover clase después de un corto delay
+                        }, 2000);
+                        found = true;
+                    }
+                }
+            });
+
+            if (!found) {
+                alert('No se encontraron resultados para su búsqueda.');
+            }
+        }
+
+        function showSuggestions() {
+            const query = searchInput.value.toLowerCase();
+            const suggestions = [];
+            searchResults.innerHTML = ''; // Clear previous suggestions
+            searchResults.style.display = 'none'; // Hide by default
+
+            if (query.length < 3) { // Only show suggestions if query is at least 3 characters
+                return;
+            }
+
+            // Define sections and their corresponding user-friendly titles
+            const sectionMap = {
+                'big-data': 'Qué es Big Data',
+                'analisis-predictivo': 'El Poder del Análisis Predictivo',
+                'aplicaciones': 'Aplicaciones y Ejemplos',
+                'etica': 'Desafíos y Consideraciones Éticas',
+                'interactivo': 'Sección Interactiva: ¡Pon a Prueba tus Conocimientos!',
+                'glosario': 'Glosario de Términos'
+            };
+
+            // Add suggestions for main sections
+            for (const id in sectionMap) {
+                if (sectionMap[id].toLowerCase().includes(query)) {
+                    suggestions.push({ text: sectionMap[id], id: id });
+                }
+            }
+
+            // Add suggestions from headings within sections
+            document.querySelectorAll('section h2, section h3').forEach(heading => {
+                const textContent = heading.textContent.toLowerCase();
+                const parentSection = heading.closest('section');
+                const sectionId = parentSection ? parentSection.id : '';
+
+                if (textContent.includes(query) && sectionId && !suggestions.some(s => s.id === sectionId && s.text === heading.textContent)) {
+                    // Avoid duplicating main section titles as sub-headings
+                    if (!Object.values(sectionMap).some(title => title.toLowerCase() === textContent)) {
+                        suggestions.push({ text: heading.textContent, id: heading.id || sectionId });
+                    }
+                }
+            });
+
+            if (suggestions.length > 0) {
+                suggestions.slice(0, 5).forEach(suggestion => { // Limit to 5 suggestions
+                    const listItem = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = `#${suggestion.id}`;
+                    link.textContent = suggestion.text;
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetElement = document.getElementById(suggestion.id);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            targetElement.classList.add('search-highlight'); // Apply highlight
+                            setTimeout(() => {
+                                targetElement.classList.remove('search-highlight');
+                            }, 2000);
+                        }
+                        searchResults.style.display = 'none'; // Hide suggestions after selection
+                        searchInput.value = suggestion.text; // Fill search input with selected suggestion
+                    });
+                    listItem.appendChild(link);
+                    searchResults.appendChild(listItem);
+                });
+                searchResults.style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>
